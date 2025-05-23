@@ -16,8 +16,7 @@
 
 #### 2. Метаданные (metadata)
 JSON
-
-
+
 {
   "id": "UUID в строковом формате",
   "title": "Название тренировки",
@@ -30,8 +29,8 @@ JSON
 }
 #### 3. Профиль пользователя (userProfile)
 JSON
-
-
+
+
 {
   "weightKg": 75.5,
   "heightCm": 180,
@@ -43,8 +42,8 @@ JSON
 }
 #### 4. Настройки велостанка (bikeSettings)
 JSON
-
-
+
+
 {
   "model": "Модель станка",
   "resistanceUnit": "percent/level/nm",
@@ -62,8 +61,8 @@ JSON
 
 ##### 5.1 Сегмент тренировки
 JSON
-
-
+
+
 {
   "type": "warmup/interval/cooldown/recovery",
   "durationSec": 600,
@@ -95,8 +94,8 @@ JSON
 }
 #### 6. Данные выполнения (workoutData)
 JSON
-
-
+
+
 {
   "timestampStart": "Дата в ISO 8601",
   "timestampEnd": "Дата в ISO 8601",
@@ -156,8 +155,8 @@ JSON
 
 #### 8. Пример использования
 JSON
-
-
+
+
 {
   "formatVersion": "1.2",
   "metadata": {
@@ -214,8 +213,8 @@ W### Функциональные возможности и роли для ра
 - Управление:
  
 Python
-
-
+
+
   def play_pause(): pass  # Пауза/продолжение
   def skip_segment(): pass  # Переход к следующему сегменту
   def adjust_difficulty(percent): pass  # Динамическая корректировка нагрузки (±10-20%)
@@ -230,8 +229,8 @@ Python
   - Анализ отклонений от плана: 
    
 Python
-
-
+
+
     if current_power < target_power * 0.8:
         suggest_increase_resistance()
     
@@ -257,8 +256,8 @@ Python
 - Логика:
  
 Python
-
-
+
+
   def add_segment(type, duration, power_profile): pass
   def auto_generate_intervals(ftp, difficulty): pass  # Генерация на основе FTP
   
@@ -266,8 +265,8 @@ Python
 - Скриптовый режим:
  
 JSON
-
-
+
+
   {
     "rules": [
       {
@@ -301,8 +300,8 @@ JSON
 - Персональные лимиты:
  
 JSON
-
-
+
+
   {
     "safetyLimits": {
       "maxHeartRate": 190,
@@ -324,8 +323,8 @@ JSON
 4. Мониторить выполнение в реальном времени:
   
 Python
-
-
+
+
    if athlete.power.drop > 15%:
        send_message("Проверь состояние!")
    
@@ -345,8 +344,8 @@ Python
 3. Экосистема:
   
 Mermaid
-
-
+
+
    graph LR
      A[Файл .json] --> B(Плеер)
      A --> C(Анализатор)
@@ -370,8 +369,8 @@ Mermaid
    - Пример кода:
     
 Python
-
-
+
+
      def load_workout(file_path):
          with open(file_path) as f:
              data = json.load(f)
@@ -382,8 +381,8 @@ Python
    - Преобразовать сегменты в линейный timeline с расчетом:  
     
 Python
-
-
+
+
      [
          {"time": 0, "type": "segment_start", "segment_id": 0},
          {"time": 30, "type": "coach_comment", "message": "Разминка..."},
@@ -395,8 +394,8 @@ Python
    - Цикл с учетом времени:
     
 Python
-
-
+
+
      while current_time < total_duration:
          update_metrics(power, cadence, hr)  # Текущие показатели
          check_events(timeline, current_time)  # Триггеры реплик/сегментов
@@ -407,8 +406,8 @@ Python
    - Триггеры по времени/условиям (triggerCondition):
     
 Python
-
-
+
+
      if eval_condition("power > 90%ftp", current_metrics):
          show_message("Максимальное усилие!")
      
@@ -424,14 +423,14 @@ Python
    - Подключение датчиков через ANT+/BLE:  
     
 Python
-
-
+
+
      bike = BleDevice.connect("PowerMeter")
      bike.on_data = lambda metrics: update_metrics(metrics)
      
 ---
 
-## ✏️ Поток 2: Редактор тренировок
+##✏️ Поток 2: Редактор тренировок
 
 ### Этап 2.1: Базовый функционал
 1. Загрузка/сохранение файлов  
@@ -441,8 +440,8 @@ Python
    - Drag-and-drop блоков:  
     
 copy
-
-
+
+
      [Разминка] —— [Интервал] —— [Заминка]
      
 3. Редактор параметров сегмента  
@@ -457,8 +456,8 @@ copy
    - Встроенный редактор для triggerCondition:  
     
 Python
-
-
+
+
      # Валидация условий на лету
      try:
          eval("power > 90%ftp", sample_metrics)
@@ -469,16 +468,16 @@ Python
    - График мощности/пульса по сегментам:  
     
 Python
-
-
+
+
      plt.plot(segments["duration"], segments["targetPower"])
      
 6. Тестирование на симуляторе  
    - Запуск виртуального спортсмена:  
     
 Python
-
-
+
+
      simulator.run(workout, athlete_profile)
      
 ---
@@ -490,8 +489,8 @@ Python
    - Валидация при сохранении:  
     
 Python
-
-
+
+
      if segment["targetPower"] > user_profile["ftp"] * 1.5:
          raise Error("Опасная нагрузка!")
      
@@ -499,8 +498,8 @@ Python
    - Git-like система версий для файлов:  
     
 copy
-
-
+
+
      workout_v1.json → workout_v2.json (изменено: сегмент 3)
      
 ### Этап 3.2: Дополнительно
@@ -526,8 +525,8 @@ copy
    - Кэширование предвычисленных данных.
 Пример чек-листа для разработчика:  
 Markdown
-
-
+
+
 - [ ] Парсинг JSON с валидацией  
 - [ ] Движок таймлайна  
 - [ ] Интерфейс плеера (кнопки + метрики)  
